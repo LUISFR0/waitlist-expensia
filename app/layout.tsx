@@ -15,10 +15,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "EXPENSIA — Control financiero inteligente",
   description: "La app para rastrear gastos, escanear tickets y calcular deducciones fiscales. Únete a la lista de espera.",
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  },
   openGraph: {
     title: 'EXPENSIA — Control financiero inteligente',
     description: 'Tus gastos, bajo control. Sin esfuerzo. Únete a la lista de espera.',
     locale: 'es_MX',
+    images: [{ url: '/favicon.png' }],
   },
 };
 
