@@ -1,109 +1,102 @@
-export const metadata = {
-  title: 'Costos de Lanzamiento — EXPENSIA',
-};
+'use client';
+
+import Image from 'next/image';
+
+const REQUIRED_COSTS = [
+  { emoji: '🔴', name: 'Apple Developer', usd: '$99', mxn: '~$1,732', tipo: 'Anual', note: 'Requerido para publicar en App Store' },
+  { emoji: '🔴', name: 'Google Play Developer', usd: '$25', mxn: '~$438', tipo: 'Una sola vez', note: 'Pago único para publicar en Play Store' },
+  { emoji: '🔴', name: 'Anthropic (Claude IA)', usd: '$10', mxn: '~$175', tipo: 'Por uso', note: 'Asesor IA + insights. ~3,000 consultas' },
+  { emoji: '🟡', name: 'Dominio expensia.mx', usd: '—', mxn: '~$200', tipo: 'Anual', note: 'Recomendado para Terms y Privacy propios' },
+];
+
+const FREE_SERVICES = [
+  { name: 'Supabase', limit: '50K usuarios / 500MB DB / 2GB bandwidth', breaks: '~5,000 usuarios activos' },
+  { name: 'RevenueCat', limit: 'Hasta $2,500 MRR', breaks: '~250 suscriptores mensuales' },
+  { name: 'OCR.Space', limit: '25,000 scans/mes', breaks: '~1,000 usuarios × 25 scans' },
+  { name: 'Vercel (waitlist)', limit: '100GB bandwidth', breaks: 'No aplica para este volumen' },
+  { name: 'Sentry', limit: '5,000 errores/mes', breaks: 'No aplica para este volumen' },
+  { name: 'Resend (emails)', limit: '3,000 emails/mes', breaks: 'Campañas masivas' },
+];
+
+const GROWTH_COSTS = [
+  { milestone: '25 suscriptores Premium ($149/mes)', action: '—', cost: '¡Recuperas la inversión inicial! 🎉', green: true },
+  { milestone: '1,000 usuarios activos', action: 'Supabase Pro', cost: '$25/mes', green: false },
+  { milestone: '250 suscriptores', action: 'RevenueCat cobra 1% del revenue', cost: '~$37/mes', green: false },
+  { milestone: '5,000 usuarios escaneando', action: 'OCR.Space paid plan', cost: '~$15/mes', green: false },
+  { milestone: 'Total operación a escala', action: '', cost: '~$75/mes', green: true },
+];
 
 export default function CostosPage() {
   return (
-    <html lang="es">
-      <head>
-        <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-          body { font-family: 'Inter', sans-serif; background: #fff; color: #0a0a0a; padding: 48px; max-width: 800px; margin: 0 auto; }
-          @media print {
-            body { padding: 24px; }
-            .no-print { display: none; }
-          }
-          .header { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; border-bottom: 2px solid #22C55E; padding-bottom: 24px; }
-          .logo { width: 48px; height: 48px; border-radius: 12px; }
-          .brand { font-size: 28px; font-weight: 900; letter-spacing: 0.15em; color: #0a0a0a; }
-          .doc-title { font-size: 13px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
-          .date { margin-left: auto; font-size: 13px; color: #999; }
-          h2 { font-size: 16px; font-weight: 700; color: #0a0a0a; margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 1px solid #e5e7eb; }
-          table { width: 100%; border-collapse: collapse; font-size: 14px; }
-          th { text-align: left; padding: 10px 14px; background: #f9fafb; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #666; border-bottom: 2px solid #e5e7eb; }
-          td { padding: 12px 14px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
-          tr:last-child td { border-bottom: none; }
-          .badge { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
-          .red { background: #ef4444; }
-          .yellow { background: #f59e0b; }
-          .total-row td { font-weight: 700; background: #f0fdf4; color: #16a34a; border-top: 2px solid #22C55E; }
-          .free-table td:first-child { display: flex; align-items: center; gap: 8px; }
-          .checkmark { color: #22C55E; font-weight: 700; }
-          .note { margin-top: 32px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 16px; font-size: 13px; color: #166534; }
-          .note strong { font-weight: 700; }
-          .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #e5e7eb; font-size: 11px; color: #999; display: flex; justify-content: space-between; }
-          .print-btn { display: block; margin: 0 auto 32px; padding: 12px 32px; background: #22C55E; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
-          .print-btn:hover { background: #16a34a; }
-          .growth-table tr:last-child td { background: #f0fdf4; font-weight: 700; color: #16a34a; }
-        `}</style>
-      </head>
-      <body>
+    <div style={{ background: '#fff', color: '#0a0a0a', fontFamily: 'system-ui, -apple-system, sans-serif', minHeight: '100vh' }}>
+      <style>{`
+        @media print { .no-print { display: none !important; } body { background: white !important; } }
+        table { border-collapse: collapse; width: 100%; }
+        th { background: #f9fafb; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 14px; text-align: left; border-bottom: 2px solid #e5e7eb; }
+        td { padding: 12px 14px; border-bottom: 1px solid #f3f4f6; font-size: 14px; vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+      `}</style>
 
-        <button className="print-btn no-print" onClick={() => typeof window !== 'undefined' && window.print()}>
-          Imprimir / Guardar como PDF
-        </button>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: '48px 32px' }}>
 
-        <div className="header">
-          <img src="/logo.png" alt="Expensia" className="logo" />
-          <div>
-            <div className="brand">EXPENSIA</div>
-            <div className="doc-title">Presupuesto de Lanzamiento</div>
-          </div>
-          <div className="date">Junio 2026</div>
+        {/* Print button */}
+        <div className="no-print" style={{ marginBottom: 32, textAlign: 'center' }}>
+          <button
+            onClick={() => window.print()}
+            style={{ background: '#22C55E', color: '#000', border: 'none', borderRadius: 10, padding: '12px 32px', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}
+          >
+            🖨️ Imprimir / Guardar como PDF
+          </button>
         </div>
 
-        <h2>Costos obligatorios para lanzar</h2>
-        <table>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, borderBottom: '3px solid #22C55E', paddingBottom: 20, marginBottom: 32 }}>
+          <Image src="/logo.png" alt="Expensia" width={48} height={48} style={{ borderRadius: 12 }} />
+          <div>
+            <div style={{ fontSize: 24, fontWeight: 900, letterSpacing: '0.15em' }}>EXPENSIA</div>
+            <div style={{ fontSize: 12, color: '#666', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Presupuesto de Lanzamiento</div>
+          </div>
+          <div style={{ marginLeft: 'auto', color: '#999', fontSize: 13 }}>Junio 2026</div>
+        </div>
+
+        {/* Required costs */}
+        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, paddingBottom: 6, borderBottom: '1px solid #e5e7eb' }}>
+          Costos obligatorios para lanzar
+        </h2>
+        <table style={{ marginBottom: 32 }}>
           <thead>
             <tr>
               <th>Servicio</th>
-              <th>Precio USD</th>
-              <th>Precio MXN</th>
+              <th>USD</th>
+              <th>MXN</th>
               <th>Tipo</th>
               <th>Notas</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span className="badge red" />Apple Developer</td>
-              <td>$99</td>
-              <td>~$1,732</td>
-              <td>Anual</td>
-              <td>Requerido para publicar en App Store</td>
-            </tr>
-            <tr>
-              <td><span className="badge red" />Google Play Developer</td>
-              <td>$25</td>
-              <td>~$438</td>
-              <td>Una sola vez</td>
-              <td>Pago único para publicar en Play Store</td>
-            </tr>
-            <tr>
-              <td><span className="badge red" />Anthropic (Claude IA)</td>
-              <td>$10</td>
-              <td>~$175</td>
-              <td>Por uso</td>
-              <td>Asesor IA + insights. ~3,000 consultas</td>
-            </tr>
-            <tr>
-              <td><span className="badge yellow" />Dominio expensia.mx</td>
-              <td>—</td>
-              <td>~$200</td>
-              <td>Anual</td>
-              <td>Recomendado para Terms y Privacy propios</td>
-            </tr>
-            <tr className="total-row">
-              <td><strong>TOTAL INVERSIÓN INICIAL</strong></td>
-              <td><strong>~$134 USD</strong></td>
-              <td><strong>~$2,545 MXN</strong></td>
-              <td colSpan={2}>Incluye primer año de Apple Developer</td>
+            {REQUIRED_COSTS.map(r => (
+              <tr key={r.name}>
+                <td><span style={{ marginRight: 6 }}>{r.emoji}</span>{r.name}</td>
+                <td style={{ fontWeight: 600 }}>{r.usd}</td>
+                <td style={{ fontWeight: 600 }}>{r.mxn}</td>
+                <td style={{ color: '#666' }}>{r.tipo}</td>
+                <td style={{ color: '#888', fontSize: 12 }}>{r.note}</td>
+              </tr>
+            ))}
+            <tr style={{ background: '#f0fdf4' }}>
+              <td style={{ fontWeight: 700 }}>TOTAL INVERSIÓN INICIAL</td>
+              <td style={{ fontWeight: 700, color: '#16a34a' }}>~$134 USD</td>
+              <td style={{ fontWeight: 700, color: '#16a34a' }}>~$2,545 MXN</td>
+              <td colSpan={2} style={{ color: '#666', fontSize: 12 }}>Incluye primer año de Apple Developer</td>
             </tr>
           </tbody>
         </table>
 
-        <h2>Servicios incluidos gratis</h2>
-        <table>
+        {/* Free services */}
+        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, paddingBottom: 6, borderBottom: '1px solid #e5e7eb' }}>
+          Servicios incluidos gratis
+        </h2>
+        <table style={{ marginBottom: 32 }}>
           <thead>
             <tr>
               <th>Servicio</th>
@@ -112,25 +105,21 @@ export default function CostosPage() {
             </tr>
           </thead>
           <tbody>
-            {[
-              ['Supabase', '50K usuarios / 500MB DB / 2GB bandwidth', '~5,000 usuarios activos'],
-              ['RevenueCat', 'Hasta $2,500 MRR', '~250 suscriptores mensuales'],
-              ['OCR.Space', '25,000 scans/mes', '~1,000 usuarios escaneando 25 tickets'],
-              ['Vercel (waitlist)', '100GB bandwidth', 'No aplica para este volumen'],
-              ['Sentry', '5,000 errores/mes', 'No aplica para este volumen'],
-              ['Resend (emails)', '3,000 emails/mes', 'Campañas masivas'],
-            ].map(([srv, limit, breaks]) => (
-              <tr key={srv}>
-                <td><span className="checkmark">✓</span> {srv}</td>
-                <td>{limit}</td>
-                <td style={{color: '#999', fontSize: '12px'}}>{breaks}</td>
+            {FREE_SERVICES.map(f => (
+              <tr key={f.name}>
+                <td><span style={{ color: '#22C55E', fontWeight: 700, marginRight: 8 }}>✓</span>{f.name}</td>
+                <td>{f.limit}</td>
+                <td style={{ color: '#999', fontSize: 12 }}>{f.breaks}</td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <h2>Costos futuros (cuando haya ingresos)</h2>
-        <table className="growth-table">
+        {/* Growth costs */}
+        <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 12, paddingBottom: 6, borderBottom: '1px solid #e5e7eb' }}>
+          Costos futuros (cuando haya ingresos)
+        </h2>
+        <table style={{ marginBottom: 32 }}>
           <thead>
             <tr>
               <th>Milestone</th>
@@ -139,45 +128,28 @@ export default function CostosPage() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>25 suscriptores Premium ($149/mes)</td>
-              <td>—</td>
-              <td style={{color: '#16a34a', fontWeight: 700}}>Recuperas la inversión inicial 🎉</td>
-            </tr>
-            <tr>
-              <td>1,000 usuarios activos</td>
-              <td>Supabase Pro</td>
-              <td>$25/mes</td>
-            </tr>
-            <tr>
-              <td>250 suscriptores</td>
-              <td>RevenueCat cobra 1% del revenue</td>
-              <td>~$37/mes</td>
-            </tr>
-            <tr>
-              <td>5,000 usuarios scaneando</td>
-              <td>OCR.Space paid plan</td>
-              <td>~$15/mes</td>
-            </tr>
-            <tr>
-              <td><strong>Total operación a escala</strong></td>
-              <td></td>
-              <td><strong>~$75/mes</strong></td>
-            </tr>
+            {GROWTH_COSTS.map((g, i) => (
+              <tr key={i} style={g.green ? { background: '#f0fdf4' } : {}}>
+                <td style={g.green ? { fontWeight: 700 } : {}}>{g.milestone}</td>
+                <td style={{ color: '#666' }}>{g.action}</td>
+                <td style={{ fontWeight: 700, color: g.green ? '#16a34a' : '#0a0a0a' }}>{g.cost}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
-        <div className="note">
+        {/* ROI note */}
+        <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 12, padding: 16, fontSize: 13, color: '#166534', marginBottom: 40 }}>
           <strong>ROI del lanzamiento:</strong> Con solo 18 suscriptores al plan mensual ($149 MXN) o 5 al plan anual ($999 MXN),
-          se recupera el 100% de la inversión inicial de ~$2,545 MXN. El modelo de negocio es altamente eficiente en capital.
+          se recupera el 100% de la inversión inicial de ~$2,545 MXN.
         </div>
 
-        <div className="footer">
+        {/* Footer */}
+        <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: 16, display: 'flex', justifyContent: 'space-between', fontSize: 11, color: '#999' }}>
           <span>EXPENSIA · Documento interno · Junio 2026</span>
-          <span>Precios USD/MXN calculados a TC ~$17.50</span>
+          <span>Precios USD/MXN a TC ~$17.50</span>
         </div>
-
-      </body>
-    </html>
+      </div>
+    </div>
   );
 }
