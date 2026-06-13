@@ -13,17 +13,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "EXPENSIA — Control financiero inteligente",
-  description: "La app para rastrear gastos, escanear tickets y calcular deducciones fiscales. Únete a la lista de espera.",
+  title: "EXPENSIA — Finanzas inteligentes para México",
+  description: "Escanea tickets, detecta deducciones fiscales y entiende a dónde va tu dinero. Únete a la lista de espera y obtén 3 meses Premium gratis.",
   icons: {
-    icon: '/favicon.png',
-    apple: '/favicon.png',
+    icon: '/logo.png',
+    apple: '/logo.png',
   },
   openGraph: {
-    title: 'EXPENSIA — Control financiero inteligente',
-    description: 'Tus gastos, bajo control. Sin esfuerzo. Únete a la lista de espera.',
+    title: 'EXPENSIA — Finanzas inteligentes para México',
+    description: 'Escanea tickets, detecta deducciones fiscales y obtén análisis IA de tus finanzas. Regístrate y obtén 3 meses Premium gratis.',
     locale: 'es_MX',
-    images: [{ url: '/favicon.png' }],
+    images: [{ url: '/logo.png' }],
   },
 };
 

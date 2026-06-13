@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       subject: `Nuevo registro en la lista de espera`,
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:0 auto;background:#0a0a0a;color:white;padding:32px;border-radius:16px;">
-          <h2 style="color:#2dd4bf;margin:0 0 16px">Nuevo registro en EXPENSIA 🎉</h2>
+          <h2 style="color:#22C55E;margin:0 0 16px">Nuevo registro en EXPENSIA 🎉</h2>
           <p style="color:#fff;margin:0 0 8px"><strong>Email:</strong> ${email}</p>
           ${name ? `<p style="color:#fff;margin:0 0 8px"><strong>Nombre:</strong> ${name}</p>` : ''}
           <p style="color:#666;margin:24px 0 0;font-size:12px">EXPENSIA Waitlist · ${new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' })}</p>
@@ -57,12 +57,12 @@ export async function POST(req: NextRequest) {
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:0 auto;background:#0a0a0a;color:white;padding:32px;border-radius:16px;">
           <div style="text-align:center;margin-bottom:24px;">
-            <div style="display:inline-block;background:linear-gradient(135deg,#0f766e,#14b8a6);border-radius:16px;padding:16px;margin-bottom:12px;">
+            <div style="display:inline-block;background:linear-gradient(135deg,#16a34a,#22C55E);border-radius:16px;padding:16px;margin-bottom:12px;">
               <span style="font-size:32px;">💸</span>
             </div>
             <h1 style="color:white;margin:0;font-size:28px;font-weight:800;">EXPENSIA</h1>
           </div>
-          <h2 style="color:#2dd4bf;text-align:center;margin:0 0 16px">¡Ya estás en la lista!</h2>
+          <h2 style="color:#22C55E;text-align:center;margin:0 0 16px">¡Ya estás en la lista!</h2>
           <p style="color:#aaa;text-align:center;line-height:1.6;">
             ${name ? `Hola ${name}, g` : 'G'}racias por registrarte. Te avisaremos en cuanto EXPENSIA esté disponible para iOS y Android.
           </p>
